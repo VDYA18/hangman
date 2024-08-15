@@ -1,1 +1,1 @@
-import random
+def games():

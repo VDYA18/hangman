@@ -1,33 +1,29 @@
 import random
 
-from wordss import words 
+# Assuming these lists are defined elsewhere in your 'wordss' module
+from wordss import easy, intermediate, hard
 
 def actually_word():
-    return random.choice(words)
-    
+    level = input("Enter the level (easy, intermediate, hard): ").strip().lower()
+    if level == "easy":
+        return random.choice(easy)
+    elif level == "intermediate":
+        return random.choice(intermediate)
+    elif level == "hard":
+        return random.choice(hard)
+    else:
+        print("Invalid level.")
+        return None  # Ensure a return value is provided when level is invalid
 
-# agle function main doo parameter banane h ek woh job actually word h aur dusre woh jo sahi guess kiya h
-# main_word: The actual word that needs to be guessed (e.g., "python").
-# guessed_word: A set of letters that the player has guessed correctly so far.
-
-#TODO: Add level of difficulty
-#TODO:  Add Hint
-#TODO:  Ask user to add there name.
-
-
-
-def display_word(guessed_word,main_word):
-    displayed=[]
+def display_word(guessed_word, main_word):
+    displayed = []
     for letter in main_word:
         if letter in guessed_word:
             displayed.append(letter)
-            
         else:
             displayed.append("_")
-            
-    return''.join(displayed)
+    return ''.join(displayed)
 
-    
 def hangman():
     print("Welcome to Hangman!")
 
@@ -42,27 +38,30 @@ def hangman():
         except ValueError:
             print("Invalid input. Please enter a number.")
 
-    # Initialize player scores
-    scores = {f"Player {i + 1}": 0 for i in range(num_players)}
+    # Initialize player names and scores
+    player_names = []
+    scores = {}
+    for i in range(num_players):
+        player_name = input(f"Enter the name for player {i + 1}: ").strip()
+        player_names.append(player_name)
+        scores[player_name] = 0
 
     # Play game
     while True:
-        for index in range(num_players):
-            player_name = f"Player {index + 1}"
+        for player_name in player_names:
             main_word = actually_word()
             guessed_word = set()
             attempts = 6
             
             print(f"\n{player_name}'s turn!")
             print(f"The word has {len(main_word)} letters.")
-            # print(main_word)
 
             while attempts > 0:
                 print(display_word(guessed_word, main_word))
                 print(f"Guessed letters: {''.join(sorted(guessed_word))}")
                 print(f"Remaining attempts: {attempts}")
                 
-                guess = input("Enter a letter: ").lower()
+                guess = input("Enter a letter: ").strip().lower()
                 
                 if len(guess) != 1 or not guess.isalpha():
                     print("Invalid input. Please enter a single letter.")
@@ -78,7 +77,7 @@ def hangman():
                     print(f"Good guess! '{guess}' is in the word.")
                     if all(letter in guessed_word for letter in main_word):
                         print(f"Congratulations {player_name}! You guessed the word: {main_word}")
-                        scores[player_name] += 1
+                        scores[player_name] += 1  # Correctly update the player's score
                         break
                 else:
                     attempts -= 1
@@ -93,7 +92,7 @@ def hangman():
             print(f"{player}: {score}")
         
         # Ask if players want to play again
-        play_again = input("Do you want to play another round? (yes/no): ").lower()
+        play_again = input("Do you want to play another round? (yes/no): ").strip().lower()
         if play_again == 'no':
             print("Thanks for playing!")
             break
@@ -101,6 +100,7 @@ def hangman():
 # Ensure this code is run only if this script is executed directly
 if __name__ == "__main__":
     hangman()
+
 
                              
                 
